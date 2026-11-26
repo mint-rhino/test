@@ -1,34 +1,16 @@
-/* Gruvbox Dark project theme */
+/* Gruvbox Dark palette */
 :root {
   color-scheme: dark;
-  --bg-dark: #282828;
-  --surface-card: #3c3836;
-  --accent: #fabd2f;
-  --accent-light: #fe8019;
-  --accent-muted: rgba(250, 189, 47, 0.14);
-  --accent-glow: rgba(250, 189, 47, 0.22);
-  --border-color: rgba(235, 219, 178, 0.14);
-  --text-main: #ebdbb2;
-  --text-sub: #a89984;
+  --gruv-bg: #282828;
+  --gruv-bg-soft: #32302f;
+  --gruv-surface: #3c3836;
+  --gruv-surface-light: #504945;
+  --gruv-text: #ebdbb2;
+  --gruv-muted: #a89984;
+  --gruv-yellow: #fabd2f;
+  --gruv-orange: #fe8019;
+  --gruv-red: #fb4934;
+  --gruv-green: #b8bb26;
+  --gruv-blue: #83a598;
+  --gruv-purple: #d3869b;
 }
-
-html, body { background-color: #282828 !important; color: #ebdbb2; }
-body {
-  background-image:
-    radial-gradient(rgba(250, 189, 47, 0.045) 1px, transparent 0),
-    linear-gradient(to right, rgba(235, 219, 178, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(235, 219, 178, 0.025) 1px, transparent 1px) !important;
-}
-.accordion-group, .chart-modal-bar { background-color: #3c3836 !important; }
-.submenu-content { background-color: rgba(40, 40, 40, 0.82) !important; }
-.btn-trigger, .item-btn { color: #ebdbb2 !important; }
-.btn-trigger:hover, .item-btn:hover { background-color: rgba(250, 189, 47, 0.09) !important; }
-.item-btn:active, .chart-back-btn:active { background: #fabd2f !important; color: #282828 !important; }
-.chart-modal { background: #282828 !important; }
-.chart-modal-title, .app-footer { color: #ebdbb2; }
-.chart-back-btn, .back-home {
-  color: #fabd2f !important;
-  background: rgba(250, 189, 47, 0.12) !important;
-  border-color: rgba(250, 189, 47, 0.35) !important;
-}
-button:focus-visible, a:focus-visible { outline-color: #fabd2f !important; }
