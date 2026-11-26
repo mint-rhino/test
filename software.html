@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>نرم‌افزارها | منابع عمران فسا</title>
+  <meta name="theme-color" content="#0f1115" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://telegram.org/js/telegram-web-app.js" defer></script>
+
+  <style>
+    :root {
+      --bg-dark: #0f1115;
+      --surface-card: #181a20;
+      --accent: #2dd4bf;
+      --accent-light: #5eead4;
+      --accent-muted: rgba(45, 212, 191, 0.12);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --radius-main: 12px;
+      --radius-sub: 8px;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(rgba(45, 212, 191, 0.045) 1px, transparent 0),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 24px 24px, 12px 12px, 12px 12px;
+      color: var(--text-main);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      padding:
+        max(20px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(36px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: clamp(300px, 92vw, 480px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 2.5vw, 14px);
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 6px;
+      gap: 6px;
+    }
+
+    .header-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .header-spacer { width: 68px; flex-shrink: 0; }
+
+    .brand-title {
+      font-size: clamp(19px, 4.8vw, 23px);
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      line-height: 1.3;
+    }
+
+    .brand-title span { color: var(--accent); }
+
+    .brand-subtitle {
+      font-size: clamp(11.5px, 3vw, 13px);
+      color: var(--text-sub);
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 10px;
+      min-height: 34px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-muted);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      border-radius: var(--radius-sub);
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: background-color 0.24s var(--ease-out-soft), color 0.2s ease, transform 0.18s var(--ease-spring);
+    }
+
+    @media (hover: hover) {
+      .back-home:hover { background: rgba(45, 212, 191, 0.2); }
+    }
+
+    .back-home:active {
+      background: var(--accent);
+      color: #0a0e12;
+      transform: scale(0.96);
+    }
+
+    .software-card {
+      border-radius: var(--radius-main);
+      border: 1px solid var(--border-color);
+      background: rgba(24, 26, 32, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+      contain: layout style;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: cardEnter 0.6s var(--ease-out-expo) forwards;
+      transition: border-color 0.3s var(--ease-out-soft), transform 0.4s var(--ease-out-expo);
+    }
+
+    .software-card:nth-of-type(1) { animation-delay: 0.04s; }
+    .software-card:nth-of-type(2) { animation-delay: 0.09s; }
+    .software-card:nth-of-type(3) { animation-delay: 0.14s; }
+    .software-card:nth-of-type(4) { animation-delay: 0.19s; }
+    .software-card:nth-of-type(5) { animation-delay: 0.24s; }
+    .software-card:nth-of-type(n+6) { animation-delay: 0.29s; }
+
+    @keyframes cardEnter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (hover: hover) {
+      .software-card:hover {
+        border-color: rgba(45, 212, 191, 0.38);
+        transform: translateY(-2px);
+      }
+    }
+
+    .software-card:focus-within { border-color: rgba(45, 212, 191, 0.42); }
+
+    .preview {
+      position: relative;
+      width: 100%;
+      height: 116px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.08), transparent 70%),
+        linear-gradient(135deg, #202329, #15171b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .preview-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sub);
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+      font-weight: 800;
+      color: #0a0e12;
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+      transition: transform 0.45s var(--ease-out-expo);
+      will-change: transform;
+    }
+
+    @media (hover: hover) {
+      .software-card:hover .preview-logo {
+        transform: scale(1.07) rotate(-2deg);
+      }
+    }
+
+    .preview-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 10.5px;
+      background: rgba(15, 17, 21, 0.72);
+      color: var(--accent);
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      font-weight: 700;
+    }
+
+    .card-body { padding: 14px; }
+
+    .sw-name {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sw-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      background: var(--accent-muted);
+      border: 1px solid rgba(45, 212, 191, 0.32);
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      border-radius: var(--radius-sub);
+      cursor: pointer;
+      text-decoration: none;
+      transition:
+        background-color 0.24s var(--ease-out-soft),
+        color 0.2s ease,
+        border-color 0.24s var(--ease-out-soft),
+        transform 0.18s var(--ease-spring);
+    }
+
+    @media (hover: hover) {
+      .btn-download:hover {
+        background: rgba(45, 212, 191, 0.2);
+        border-color: rgba(45, 212, 191, 0.55);
+      }
+    }
+
+    .btn-download:active {
+      background: var(--accent);
+      color: #0a0e12;
+      border-color: var(--accent);
+      transform: scale(0.985);
+    }
+
+    .notice {
+      font-size: 11.5px;
+      color: var(--text-sub);
+      background: rgba(45, 212, 191, 0.06);
+      border: 1px dashed rgba(45, 212, 191, 0.32);
+      border-radius: var(--radius-sub);
+      padding: 11px 13px;
+      line-height: 1.8;
+      margin-top: 4px;
+    }
+
+    .notice b { color: var(--accent); }
+
+    @media (min-width: 768px) {
+      .container { max-width: 520px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="header-top">
+        <a href="index.html" class="back-home" onclick="triggerHaptic()">→ بازگشت</a>
+        <h1 class="brand-title">💻 نرم‌افزارهای <span>عمران</span></h1>
+        <span class="header-spacer" aria-hidden="true"></span>
+      </div>
+      <p class="brand-subtitle">دانلود نسخه‌های پرکاربرد مهندسی عمران</p>
+    </header>
+
+    <article class="software-card">
+      <div class="preview">
+        <div class="preview-logo" style="background:#d63031; color:#fff;">A</div>
+      </div>
+      <div class="card-body">
+        <h2 class="sw-name">AutoCAD</h2>
+        <p class="sw-desc">نرم‌افزار ترسیم و طراحی نقشه‌های دوبعدی و سه‌بعدی برای مهندسان عمران و معماران.</p>
+        <a class="btn-download" href="https://soft98.ir/software/engineering/2355-%D8%A7%D8%AA%D9%88%DA%A9%D8%AF-%D9%BE%D9%86%D8%AC.html" target="_blank" rel="noopener noreferrer" onclick="openDownload(event, this.href)">
+          ⬇️ دانلود از Soft98
+        </a>
+      </div>
+    </article>
+
+    <article class="software-card">
+      <div class="preview">
+        <div class="preview-logo" style="background:#e16737; color:#fff;">M</div>
+        <span class="preview-tag">پرطرفدار</span>
+      </div>
+      <div class="card-body">
+        <h2 class="sw-name">MATLAB</h2>
+        <p class="sw-desc">محیط برنامه‌نویسی و محاسبات عددی برای تحلیل، مدل‌سازی و شبیه‌سازی مسائل مهندسی.</p>
+        <a class="btn-download" href="https://soft98.ir/software/engineering/1291-%D8%AF%D8%A7%D9%86%D9%84%D9%88%E2%80%8C%D8%AF%E2%80%8C-%D9%85%D8%AA%D9%84%D8%A8-%D9%87%D9%81%D8%AA.html" target="_blank" rel="noopener noreferrer" onclick="openDownload(event, this.href)">
+          ⬇️ دانلود از Soft98
+        </a>
+      </div>
+    </article>
+
+    <article class="software-card">
+      <div class="preview">
+        <div class="preview-logo" style="background:#6c5ce7; color:#fff;">SA</div>
+        <span class="preview-tag">تخصصی سازه</span>
+      </div>
+      <div class="card-body">
+        <h2 class="sw-name">CSI SAFE</h2>
+        <p class="sw-desc">طراحی دال‌ها، فونداسیون‌ها و سیستم‌های پیچیده‌ی سازه‌ای با دقت بالا.</p>
+        <a class="btn-download" href="https://soft98.ir/software/engineering/3404-csi_safe.html" target="_blank" rel="noopener noreferrer" onclick="openDownload(event, this.href)">
+          ⬇️ دانلود از Soft98
+        </a>
+      </div>
+    </article>
+
+    <article class="software-card">
+      <div class="preview">
+        <div class="preview-logo" style="background:#0984e3; color:#fff;">E</div>
+        <span class="preview-tag">تخصصی سازه</span>
+      </div>
+      <div class="card-body">
+        <h2 class="sw-name">CSI ETABS</h2>
+        <p class="sw-desc">نرم‌افزار تحلیل و طراحی سازه‌های ساختمانی؛ پرکاربردترین ابزار مهندسی سازه.</p>
+        <a class="btn-download" href="https://soft98.ir/software/engineering/2361-csi-etabs.html" target="_blank" rel="noopener noreferrer" onclick="openDownload(event, this.href)">
+          ⬇️ دانلود از Soft98
+        </a>
+      </div>
+    </article>
+
+    <article class="software-card">
+      <div class="preview">
+        <div class="preview-logo" style="background:#00b894; color:#fff;">G</div>
+      </div>
+      <div class="card-body">
+        <h2 class="sw-name">Google Earth</h2>
+        <p class="sw-desc">مشاهده‌ی تصاویر ماهواره‌ای و نقشه‌های سه‌بعدی زمین برای مطالعات و بررسی محلی پروژه‌ها.</p>
+        <a class="btn-download" href="https://soft98.ir/internet/325-google-earth.html" target="_blank" rel="noopener noreferrer" onclick="openDownload(event, this.href)">
+          ⬇️ دانلود از Soft98
+        </a>
+      </div>
+    </article>
+
+    <div class="notice">
+      ⚠️ <b>توجه:</b> لینک‌های دانلود از سایت Soft98 هستن و به‌روزرسانی نسخه‌ها توسط اون سایت انجام می‌شه. قبل از نصب، حتماً بخش «راهنمای نصب» همون صفحه رو بخونید. این مینی‌اپ فقط نقش معرفی و دسترسی سریع داره.
+    </div>
+  </main>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+
+    function triggerHaptic(style = 'light') {
+      if (tg?.HapticFeedback?.impactOccurred) {
+        tg.HapticFeedback.impactOccurred(style);
+      }
+    }
+
+    function openDownload(event, url) {
+      triggerHaptic('light');
+      if (tg?.openLink) {
+        event.preventDefault();
+        tg.openLink(url);
+      }
+    }
+
+    function handleBackToHome() {
+      triggerHaptic('light');
+      window.location.href = 'index.html';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!tg) return;
+      tg.ready();
+      if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor('#0f1115');
+      if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor('#0f1115');
+      if (tg.BackButton) {
+        tg.BackButton.show();
+        if (typeof tg.BackButton.offClick === 'function') {
+          tg.BackButton.offClick(handleBackToHome);
+        }
+        tg.BackButton.onClick(handleBackToHome);
+      }
+    });
+  </script>
+</body>
+</html>
